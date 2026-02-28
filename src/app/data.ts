@@ -1,5 +1,5 @@
-// Placeholder avatars (replacing Figma Make asset imports)
-const imgLydia = "https://images.unsplash.com/photo-1589220286904-3dcef62c68ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200";
+// Avatar imports
+import imgLydia from "@/assets/lydia-avatar.png";
 const imgCamilo = "https://images.unsplash.com/photo-1701463387028-3947648f1337?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200";
 
 /* ══════════════════════════════════════════════════════
