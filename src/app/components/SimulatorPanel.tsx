@@ -1215,37 +1215,9 @@ export function SimulatorPanel() {
       </div>
 
       {/* ═══════════════════════════════════════════
-           SCENARIOS section (collapsible)
+           SCENARIOS section (hidden)
            ═══════════════════════════════════════════ */}
-      <div style={{ borderBottom: scenariosOpen ? "none" : "1px solid var(--border)" }}>
-        <button
-          onClick={() => setScenariosOpen((v) => !v)}
-          className="flex items-center justify-between w-full px-[16px] pt-[12px] pb-[6px] cursor-pointer"
-          style={{ background: "none", border: "none" }}
-        >
-          <div className="flex items-center gap-[6px]">
-            <span style={groupHeadingStyle}>Scenarios</span>
-            {activeScenarioId && (
-              <span
-                style={{
-                  fontSize: "9px",
-                  fontWeight: "var(--font-weight-semibold)",
-                  color: "var(--primary)",
-                  backgroundColor: "var(--primary-tint-bg)",
-                  padding: "1px 6px",
-                  borderRadius: "4px",
-                  letterSpacing: "0.3px",
-                }}
-              >
-                Active
-              </span>
-            )}
-          </div>
-          <ChevronIcon open={scenariosOpen} />
-        </button>
-      </div>
-
-      {scenariosOpen && (
+      {false && (
         <div
           className="flex flex-col gap-[6px] px-[16px] pb-[12px]"
           style={{ borderBottom: "1px solid var(--border)" }}
