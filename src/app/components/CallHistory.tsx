@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { type CallRecord } from "../data";
 import { useSimulator } from "../hooks/useSimulator";
 import svgPaths from "../../imports/svg-ub3hkc8mkg";
@@ -195,9 +196,86 @@ function CallHistoryRow({ call, onCallTap, onInfoTap }: { call: CallRecord; onCa
   );
 }
 
+/* ── Shimmer skeleton row matching the call history row layout ── */
+function ShimmerBar({ width, height }: { width: number; height: number }) {
+  return (
+    <div
+      className="rounded-[2px] shrink-0"
+      style={{
+        width,
+        height,
+        background: "linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.03) 86%)",
+        animation: "shimmer-pulse 1.8s ease-in-out infinite",
+      }}
+    />
+  );
+}
+
+function SkeletonCallRow() {
+  return (
+    <div className="relative shrink-0 w-full bg-background">
+      <div className="flex items-center py-[12px] w-full">
+        <div className="flex-1 flex items-center gap-[6px] pl-[16px]">
+          {/* Circle icon */}
+          <div className="relative shrink-0 size-[44px]">
+            <svg className="absolute block size-full" fill="none" viewBox="0 0 44 44">
+              <circle cx="22" cy="22" r="22" fill="var(--border)" style={{ animation: "shimmer-pulse 1.8s ease-in-out infinite" }} />
+            </svg>
+          </div>
+          {/* Text bars */}
+          <div className="flex flex-col gap-[5px] items-start pl-[6px]">
+            <ShimmerBar width={140} height={14} />
+            <ShimmerBar width={90} height={12} />
+          </div>
+        </div>
+        {/* Right side */}
+        <div className="flex flex-col gap-[8px] items-end pr-[12px] shrink-0">
+          <ShimmerBar width={48} height={10} />
+          <ShimmerBar width={36} height={12} />
+        </div>
+      </div>
+      <div className="absolute bottom-0 h-px left-0 right-0">
+        <div className="absolute bg-border bottom-0 h-[0.5px] left-[56px] right-0" />
+      </div>
+    </div>
+  );
+}
+
+function SkeletonCallHistory() {
+  return (
+    <div className="flex flex-col items-start w-full">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <SkeletonCallRow key={i} />
+      ))}
+    </div>
+  );
+}
+
 export function CallHistory({ queueId, onCallTap, onInfoTap }: { queueId: string; onCallTap?: (call: CallRecord) => void; onInfoTap?: (call: CallRecord) => void }) {
   const { liveCallHistories } = useSimulator();
   const calls = liveCallHistories[queueId] || [];
+  const [loading, setLoading] = useState(true);
+  const prevQueueId = useRef(queueId);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 200);
+    return () => clearTimeout(timer);
+  }, [queueId]);
+
+  // Also trigger shimmer when switching back to this tab (re-mount)
+  useEffect(() => {
+    if (prevQueueId.current === queueId) {
+      setLoading(true);
+      const timer = setTimeout(() => setLoading(false), 200);
+      return () => clearTimeout(timer);
+    }
+    prevQueueId.current = queueId;
+  }, []);
+
+  if (loading) {
+    return <SkeletonCallHistory />;
+  }
 
   if (calls.length === 0) {
     return (
