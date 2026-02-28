@@ -1,6 +1,6 @@
 // Avatar imports
 import imgLydia from "@/assets/lydia-avatar.png";
-const imgCamilo = "https://images.unsplash.com/photo-1701463387028-3947648f1337?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=200";
+import imgCamilo from "@/assets/camilo-avatar.png";
 
 /* ══════════════════════════════════════════════════════
    Gender-classified Avatar Pools (Unsplash, w=200)
